@@ -1,32 +1,37 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import useHover from '../../hooks'
 import './TileSelector.css'
-import GameContext from '../../GameContext.js';
+import GameContext from '../../GameContext'
 
+const TileSelector = (props) => {
 
+  const [ref, hovered] = useHover()
 
-const TileSelector = () => {
-  const context = useContext(GameContext);
-  const [ref, hovered] = useHover();
-  const dropdown = hovered ? (
-    <div className='tileSelectorContent' >
-      <div className='number' onClick={() => context.handleNumTileChange(4)}>4</div>
-      <div className='number' onClick={() => context.handleNumTileChange(16)}>16</div>
-      <div className='number' onClick={() => context.handleNumTileChange(36)}>36</div>
-    </div>
-  ) : null;
 
   return (
-  <div className='tileSelector'>
-    <div>Number of Tiles</div>
-    <div className='tileSelectorDropdown' ref={ref}>
-        {context.numTiles}
-        {dropdown}
-    </div>
-  </div>
-  )
-      
- 
+    <GameContext.Consumer>
+    {
+      ({numTiles, handleNumTileChange}) => {
+        const dropdown = hovered ? (
+              <div className='tileSelectorContent' >
+                <div className='number' onClick={() => handleNumTileChange(4)}>4</div>
+                <div className='number' onClick={() => handleNumTileChange(16)}>16</div>
+                <div className='number' onClick={() => handleNumTileChange(36)}>36</div>
+              </div>
+        ) : null
+
+        return (
+          <div className='tileSelector'>
+            <div>Number of Tiles</div>
+              <div className='tileSelectorDropdown' ref={ref}>
+                {numTiles}
+                {dropdown}
+              </div>
+          </div>
+       )
+      }
+    }
+  </GameContext.Consumer>)
 }
 
 export default TileSelector
